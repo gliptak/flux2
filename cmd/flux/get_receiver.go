@@ -77,15 +77,16 @@ func getReceiverCmdRun(cmd *cobra.Command, args []string) error {
 	}
 	var rows [][]string
 	for _, receiver := range list.Items {
+		var row []string
 		if c := apimeta.FindStatusCondition(receiver.Status.Conditions, meta.ReadyCondition); c != nil {
-			row := []string{
+			row = []string{
 				receiver.GetName(),
 				string(c.Status),
 				c.Message,
 				strings.Title(strconv.FormatBool(receiver.Spec.Suspend)),
 			}
 		} else {
-			row := []string{
+			row = []string{
 				receiver.GetName(),
 				string(metav1.ConditionFalse),
 				"waiting to be reconciled",
